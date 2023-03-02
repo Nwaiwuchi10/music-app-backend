@@ -9,12 +9,12 @@ const mp3Route = require("./routes/mp3");
 const router = express.Router();
 const app = express();
 app.use(cors());
-app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.json({ limit: "1mb" }));
 app.use(
   bodyParser.urlencoded({
-    limit: "5mb",
+    limit: "1mb",
     extended: true,
-    parameterLimit: 5000,
+    parameterLimit: 1000,
   })
 );
 // / create connection
@@ -25,6 +25,7 @@ const db = config.get("mongoURI");
 mongoose
   .connect(db, {
     useNewUrlParser: true,
+
     // useCreateIndex: true,
     useUnifiedTopology: true,
     // useFindAndModify: false,

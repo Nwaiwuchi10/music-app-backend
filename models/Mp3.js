@@ -22,17 +22,32 @@ const Mp3Schema = new mongoose.Schema(
       type: String,
     },
     recommendSong: {
-      type: String,
+      type: Boolean,
+      default: false,
     },
-    rating: {
-      type: Number,
 
-      default: 0,
-    },
-    likes: {
-      type: Array,
-      default: [],
-    },
+    // ratingReview: [
+    //   {
+    //     type: Number,
+    //     required: true,
+
+    //     user: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       required: true,
+    //       ref: "User",
+    //     },
+    //   },
+    // ],
+
+    likess: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "User",
+        },
+      },
+    ],
     artist: {
       type: String,
       required: true,

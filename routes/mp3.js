@@ -102,7 +102,7 @@ router.get("/", async (req, res) => {
     const mp3s = await Mp3.find({}).sort({ createdAt: -1 });
     // .populate("user", ["profilePicture", "username", "Verified", "isAdmin"]);
 
-    res.json(mp3s);
+    res.status(200).json(mp3s);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -113,7 +113,7 @@ router.get("/:id", async (req, res) => {
     const mp3 = await Mp3.findById(req.params.id);
     // .populate("user", ["profilePicture", "username", "Verified", "isAdmin"]);
 
-    res.json(mp3);
+    res.status(200).json(mp3);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -157,5 +157,22 @@ router.get("/download/:id", async (req, res) => {
   // Send the file data as the response body
 
   res.send(mp3.data);
+});
+///
+router.put("/like/:id", async (req, res) => {
+  try {
+    const mp3 = await Mp3.findById(req.params.id);
+    if (!mp3.likes.includes(req.body.user)) {
+      await mp3.updateOne({ $push: { likes: req.body.user } });
+      res.status(200).json("The post has been liked");
+      const savedlikes = await newLikes.save();
+      res.status(200).json(savedlikes);
+    } else {
+      await mp3.updateOne({ $pull: { likes: req.body.user } });
+      res.status(200).json("The post has been disliked");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 module.exports = router;
