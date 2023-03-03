@@ -1,5 +1,6 @@
 const express = require("express");
 const colors = require("colors");
+const compression = require("compression");
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
@@ -9,12 +10,13 @@ const mp3Route = require("./routes/mp3");
 const router = express.Router();
 const app = express();
 app.use(cors());
-app.use(bodyParser.json({ limit: "1mb" }));
+app.use(compression());
+app.use(bodyParser.json({ limit: "10kb" }));
 app.use(
   bodyParser.urlencoded({
-    limit: "1mb",
+    limit: "10kb",
     extended: true,
-    parameterLimit: 1000,
+    parameterLimit: 10,
   })
 );
 // / create connection
