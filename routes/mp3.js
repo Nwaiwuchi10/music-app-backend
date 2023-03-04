@@ -175,4 +175,16 @@ router.put("/like/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const mp3 = await Mp3.findById(req.params.id);
+    if (mp3) {
+      await mp3.remove();
+      res.status(200).json({ message: "Music File has been deleted" });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 module.exports = router;

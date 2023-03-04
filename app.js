@@ -11,12 +11,12 @@ const router = express.Router();
 const app = express();
 app.use(cors());
 app.use(compression());
-app.use(bodyParser.json({ limit: "10kb" }));
+app.use(bodyParser.json({ limit: "10mb" }));
 app.use(
   bodyParser.urlencoded({
-    limit: "10kb",
+    limit: "10mb",
     extended: true,
-    parameterLimit: 10,
+    parameterLimit: 10000,
   })
 );
 // / create connection
