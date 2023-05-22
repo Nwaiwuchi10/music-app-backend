@@ -4,13 +4,13 @@ const compression = require("compression");
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
-const cors = require("cors");
+// const cors = require("cors");
 const bodyParser = require("body-parser");
 const mp3Route = require("./routes/mp3");
 const mp4Route = require("./routes/mp4");
 const router = express.Router();
 const app = express();
-app.use(cors());
+// app.use(cors());
 app.use(compression());
 app.use(bodyParser.json({ limit: "20mb" }));
 // app.use(
