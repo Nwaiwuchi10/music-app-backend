@@ -24,6 +24,15 @@ app.use(bodyParser.json({ limit: "20mb" }));
 
 const db = config.get("mongoURI");
 
+app.get("/items/:my_item", async (req, res) => {
+  let my_item = req.params.my_item;
+  let item = await db
+    .db("my_db")
+    .collection("my_collection")
+    .findOne({ my_item: my_item });
+
+  return res.json(item);
+});
 // Connect to MongoDB
 mongoose
   .connect(db, {
