@@ -39,15 +39,15 @@ const Mp3Schema = new mongoose.Schema(
     //   },
     // ],
 
-    likess: [
-      {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: "User",
-        },
-      },
-    ],
+    // likess: [
+    //   {
+    //     user: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       required: true,
+    //       ref: "User",
+    //     },
+    //   },
+    // ],
     artist: {
       type: String,
       required: true,

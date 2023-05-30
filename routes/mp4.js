@@ -108,6 +108,19 @@ router.get("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
+//
+router.get("/data", async (req, res) => {
+  try {
+    const mp4s = await Mp4.find(
+      {},
+      "_id title image category recommendSong artist   "
+    ).sort({ createdAt: -1 });
+
+    res.status(200).json(mp4s);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 /////// to get music by id
 router.get("/:id", async (req, res) => {
   try {
