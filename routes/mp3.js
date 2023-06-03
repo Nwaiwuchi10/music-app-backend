@@ -119,6 +119,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 ////
+router.get("/:artist", async (req, res) => {
+  try {
+    const mp3 = await Mp3.findOne({ artist: req.params.artist });
+    // .populate("user", ["profilePicture", "username", "Verified", "isAdmin"]);
+
+    res.status(200).json(mp3);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+////
 router.get("/data", async (req, res) => {
   try {
     const mp3 = await Mp3.find(
