@@ -53,10 +53,15 @@ router.post(
   "/",
 
   async (req, res) => {
+    const { title } = req.body;
+
+    // const title = inputString.replace(/ /g, "");
+    const modify = title.replace(/\s+/g, "_");
+
     try {
       //create new user
       const newPost = new Mp3({
-        title: req.body.title,
+        title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
         filepath: req.body.filepath,
@@ -119,9 +124,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 ////
-router.get("/mp3/:artist", async (req, res) => {
+router.get("/mp3/:title", async (req, res) => {
   try {
-    const mp3 = await Mp3.findOne({ artist: req.params.artist });
+    const mp3 = await Mp3.findOne({ title: req.params.title });
 
     if (!mp3) {
       return res.status(404).json({ error: "Music not found" });
