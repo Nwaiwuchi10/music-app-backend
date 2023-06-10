@@ -102,7 +102,7 @@ router.post(
   }
 );
 ////to get all music
-router.get("/", async (req, res) => {
+router.get("/da", async (req, res) => {
   try {
     const mp3s = await Mp3.find({}).sort({ createdAt: -1 });
     // .populate("user", ["profilePicture", "username", "Verified", "isAdmin"]);
@@ -139,12 +139,13 @@ router.get("/mp3/:title", async (req, res) => {
   }
 });
 ////
-router.get("/data", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const mp3s = await Mp3.find(
       {},
-      "_id user title image category recommendSong artist   "
+      "_id title image category recommendSong artist"
     ).sort({ createdAt: -1 });
+
     res.status(200).json(mp3s);
   } catch (err) {
     res.status(500).json(err);
