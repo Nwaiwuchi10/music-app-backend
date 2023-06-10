@@ -132,6 +132,20 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.get("/mp4/:title", async (req, res) => {
+  try {
+    const mp4 = await Mp4.findOne({ title: req.params.title });
+
+    if (!mp4) {
+      return res.status(404).json({ error: "Music Video not found" });
+    }
+
+    // If the music is found, return the music data
+    res.json(mp4);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 ////
 router.get("/get/:id", async (req, res) => {
   const id = req.params.id;
