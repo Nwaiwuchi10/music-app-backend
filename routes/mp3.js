@@ -126,7 +126,9 @@ router.get("/:id", async (req, res) => {
 ////
 router.get("/mp3/:title", async (req, res) => {
   try {
-    const mp3 = await Mp3.findOne({ title: req.params.title });
+    const mp3 = await Mp3.findOne({
+      title: req.params.title.replace(/\s+/g, "_"),
+    });
 
     if (!mp3) {
       return res.status(404).json({ error: "Music not found" });
