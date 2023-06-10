@@ -193,7 +193,7 @@ router.get("/download/:id", async (req, res) => {
   res.send(mp3.data);
 });
 ///
-router.put("/like/:id", async (req, res) => {
+router.put("/likes/:id", async (req, res) => {
   try {
     const mp3 = await Mp3.findById(req.params.id);
     if (!mp3.likes.includes(req.body.user)) {
