@@ -54,10 +54,14 @@ router.post(
   "/",
 
   async (req, res) => {
+    const { title } = req.body;
+
+    // const title = inputString.replace(/ /g, "");
+    const modify = title.replace(/\s+/g, "_");
     try {
       //create new user
       const newPost = new Mp4({
-        title: req.body.title,
+        title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
         filepath: req.body.filepath,
@@ -134,7 +138,9 @@ router.get("/:id", async (req, res) => {
 });
 router.get("/mp4/:title", async (req, res) => {
   try {
-    const mp4 = await Mp4.findOne({ title: req.params.title });
+    const mp4 = await Mp4.findOne({
+      title: req.params.title.replace(/\s+/g, "_"),
+    });
 
     if (!mp4) {
       return res.status(404).json({ error: "Music Video not found" });
