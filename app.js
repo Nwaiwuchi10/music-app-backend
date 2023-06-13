@@ -11,7 +11,18 @@ const mp4Route = require("./routes/mp4");
 const router = express.Router();
 const app = express();
 app.use(cors());
-app.use(compression());
+app.use(
+  compression({
+    level: 6,
+    threshold: 10 * 1000,
+    filter: (req, res) => {
+      if (req.headers["x-no-compression"]) {
+        return false;
+      }
+      return compression.filter(req, res);
+    },
+  })
+);
 app.use(bodyParser.json({ limit: "20mb" }));
 // app.use(
 //   bodyParser.urlencoded({
