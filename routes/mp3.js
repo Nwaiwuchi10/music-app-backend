@@ -222,4 +222,26 @@ router.delete("/delete/:id", async (req, res) => {
     res.status(500).json(error);
   }
 });
+////downloadCount
+router.put("/downloadCount/:title", async (req, res) => {
+  try {
+    const mp3 = await Mp3.findOne({
+      title: req.params.title.replace(/\s+/g, "_"),
+    });
+    if (!mp3) {
+      return res.status(404).json({ error: "Music not found" });
+    }
+    // Increment the download count
+    mp3.downloadCount++;
+    //  mp3.downloadCount += 1;
+    await mp3.save();
+
+    // Return a response indicating success
+    res
+      .status(200)
+      .json({ message: "Download count incremented successfully" });
+  } catch (err) {
+    res.status(500).json({ err: "Unable to update count" });
+  }
+});
 module.exports = router;
