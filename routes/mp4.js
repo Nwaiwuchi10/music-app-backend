@@ -101,6 +101,41 @@ router.post(
     }
   }
 );
+/////update or edith
+router.put("/update/:id", async (req, res) => {
+  try {
+    const mp3 = await Mp4.findById(req.params.id);
+    mp3.image = req.body.image || mp3.image;
+    mp3.artist = req.body.artist || mp3.artist;
+    mp3.filepath = req.body.filepath || mp3.filepath;
+    mp3.title = req.body.title || mp3.title;
+    mp3.description = req.body.description || mp3.description;
+    mp3.brand = req.body.brand || mp3.brand;
+    mp3.recommendSong = req.body.recommendSong || mp3.recommendSong;
+    mp3.year = req.body.year || mp3.year;
+    mp3.category = req.body.category || mp3.category;
+    mp3.album = req.body.album || mp3.album;
+    mp3.genre = req.body.genre || mp3.genre;
+
+    const updatedUser = await mp3.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      brand: updatedUser.brand,
+      image: updatedUser.image,
+      artist: updatedUser.artist,
+      title: updatedUser.title,
+      recommendSong: updatedUser.recommendSong,
+      filepath: updatedUser.filepath,
+      description: updatedUser.description,
+      year: updatedUser.year,
+      category: updatedUser.category,
+      album: updatedUser.album,
+      genre: updatedUser.genre,
+    });
+  } catch (err) {
+    res.status(500).json({ err: "Failed to update" });
+  }
+});
 ////to get all music
 router.get("/", async (req, res) => {
   try {

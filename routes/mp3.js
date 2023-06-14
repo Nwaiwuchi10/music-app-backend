@@ -101,8 +101,43 @@ router.post(
     }
   }
 );
+/////Update or edith music
+router.put("/update/:id", async (req, res) => {
+  try {
+    const mp3 = await Mp3.findById(req.params.id);
+    mp3.image = req.body.image || mp3.image;
+    mp3.artist = req.body.artist || mp3.artist;
+    mp3.filepath = req.body.filepath || mp3.filepath;
+    mp3.title = req.body.title || mp3.title;
+    mp3.description = req.body.description || mp3.description;
+    mp3.brand = req.body.brand || mp3.brand;
+    mp3.recommendSong = req.body.recommendSong || mp3.recommendSong;
+    mp3.year = req.body.year || mp3.year;
+    mp3.category = req.body.category || mp3.category;
+    mp3.album = req.body.album || mp3.album;
+    mp3.genre = req.body.genre || mp3.genre;
+
+    const updatedUser = await mp3.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      brand: updatedUser.brand,
+      image: updatedUser.image,
+      artist: updatedUser.artist,
+      title: updatedUser.title,
+      recommendSong: updatedUser.recommendSong,
+      filepath: updatedUser.filepath,
+      description: updatedUser.description,
+      year: updatedUser.year,
+      category: updatedUser.category,
+      album: updatedUser.album,
+      genre: updatedUser.genre,
+    });
+  } catch (err) {
+    res.status(500).json({ err: "Failed to update" });
+  }
+});
 ////to get all music
-router.get("/da", async (req, res) => {
+router.get("/daata", async (req, res) => {
   try {
     const mp3s = await Mp3.find({}).sort({ createdAt: -1 });
     // .populate("user", ["profilePicture", "username", "Verified", "isAdmin"]);
@@ -214,6 +249,19 @@ router.put("/like/:id", async (req, res) => {
 router.delete("/delete/:id", async (req, res) => {
   try {
     const mp3 = await Mp3.findById(req.params.id);
+    if (mp3) {
+      await mp3.remove();
+      res.status(200).json({ message: "Music File has been deleted" });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+router.delete("/deletes/:title", async (req, res) => {
+  try {
+    const mp3 = await Mp3.findOne({
+      title: req.params.title.replace(/\s+/g, "_"),
+    });
     if (mp3) {
       await mp3.remove();
       res.status(200).json({ message: "Music File has been deleted" });
