@@ -1,6 +1,7 @@
 const Mp3 = require("../models/Mp3");
 const multer = require("multer");
 const path = require("path");
+const cloudinary = require("../Utils/cloudinary");
 const router = require("express").Router();
 
 /////multer storage
@@ -53,12 +54,17 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title } = req.body;
+    const { title, image } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
 
     try {
+      const result = await cloudinary.uploader.upload(image, {
+        folder: "musicimage",
+        // width:300,
+        // crop:"scale"
+      });
       //create new user
       const newPost = new Mp3({
         title: modify,
@@ -67,7 +73,10 @@ router.post(
         filepath: req.body.filepath,
         brand: req.body.brand,
         album: req.body.album,
-        image: req.body.image,
+        image: {
+          public_id: result.public_id,
+          url: result.secure_url,
+        },
         year: req.body.year,
         recommendSong: req.body.recommendSong,
         artist: req.body.artist,

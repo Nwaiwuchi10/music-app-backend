@@ -5,11 +5,22 @@ const Mp3Schema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      // required:[true,'Music must at least a title']
     },
     image: {
-      type: String,
-      required: true,
+      public_id: {
+        type: String,
+        required: true,
+      },
+      url: {
+        type: String,
+        required: true,
+      },
     },
+    // image: {
+    //   type: String,
+    //   required: true,
+    // },
     description: {
       type: String,
       required: true,
