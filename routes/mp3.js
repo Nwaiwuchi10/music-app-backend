@@ -1,4 +1,5 @@
 const ImageKit = require("../Utils/imagekit");
+const s3 = require("../Utils/s3aws");
 const Mp3 = require("../models/Mp3");
 const multer = require("multer");
 const path = require("path");
@@ -55,12 +56,20 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title, image } = req.body;
+    const { title, image, filepath } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
 
     try {
+      const s3params = {
+        Bucket: "YOUR_BUCKET_NAME",
+        Key: filepath.originalname,
+        Body: filepath.buffer,
+      };
+      const s3result = s3.upload({
+        s3params,
+      });
       const result = await ImageKit.upload({
         file: image,
         fileName: "musicimage.jpg",
@@ -72,7 +81,7 @@ router.post(
         title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
-        filepath: req.body.filepath,
+        filepath: s3result,
         brand: req.body.brand,
         album: req.body.album,
         image: result.url,
@@ -314,27 +323,22 @@ router.put("/update/image/:id", async (req, res) => {
     const image = req.body;
 
     // Upload the image to ImageKit
-    const imageUploadResponse = await ImageKit.upload({
+    const imagResult = await ImageKit.upload({
       file: image,
+      fileName: "musicimage.jpg",
     });
 
     // Get the URL of the uploaded image
-    const imageURL = imageUploadResponse.url;
 
     // Update the document in MongoDB
-    const updatedDoc = await Mp3.findByIdAndUpdate(req.params.id, {
-      imageURL: imageURL,
+    await Mp3.findByIdAndUpdate(req.params.id, {
+      imageURL: imagResult,
     });
 
     // Delete the temporary file
     fs.unlinkSync(image);
 
-    // res.send('Update successful');
-    res.status(600).json({
-      _id: updatedUser._id,
-
-      image: updatedDoc.image,
-    });
+    res.send("Update successful");
   } catch (error) {
     res.status(500).send("Error updating data");
   }
