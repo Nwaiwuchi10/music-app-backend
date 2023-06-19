@@ -1,7 +1,8 @@
+const ImageKit = require("../Utils/imagekit");
 const Mp3 = require("../models/Mp3");
 const multer = require("multer");
 const path = require("path");
-const cloudinary = require("../Utils/cloudinary");
+// const cloudinary = require("../Utils/cloudinary");
 const router = require("express").Router();
 
 /////multer storage
@@ -60,8 +61,8 @@ router.post(
     const modify = title.replace(/\s+/g, "_");
 
     try {
-      const result = await cloudinary.uploader.upload(image, {
-        folder: "musicimage",
+      const result = await ImageKit.upload(image, {
+        fileName: "musicimage.jpg",
         // width:300,
         // crop:"scale"
       });
@@ -73,10 +74,7 @@ router.post(
         filepath: req.body.filepath,
         brand: req.body.brand,
         album: req.body.album,
-        image: {
-          public_id: result.public_id,
-          url: result.secure_url,
-        },
+        image: result.image,
         year: req.body.year,
         recommendSong: req.body.recommendSong,
         artist: req.body.artist,
@@ -114,7 +112,12 @@ router.post(
 router.put("/update/:id", async (req, res) => {
   try {
     const mp3 = await Mp3.findById(req.params.id);
-    mp3.image = req.body.image || mp3.image;
+    const result = await ImageKit.upload(image, {
+      fileName: "musicimage.jpg",
+      // width:300,
+      // crop:"scale"
+    });
+    mp3.image = req.body.result.image || mp3.result.image;
     mp3.artist = req.body.artist || mp3.artist;
     mp3.filepath = req.body.filepath || mp3.filepath;
     mp3.title = req.body.title || mp3.title;
