@@ -308,7 +308,7 @@ router.put("/downloadCount/:title", async (req, res) => {
     res.status(500).json({ err: "Unable to update count" });
   }
 });
-app.put("/update/imag/:id", async (req, res) => {
+router.put("/update/image/:id", async (req, res) => {
   try {
     // Get the file path of the uploaded image
     const image = req.body;
