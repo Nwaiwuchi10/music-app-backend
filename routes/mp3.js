@@ -111,15 +111,15 @@ router.post(
 );
 /////Update or edith music
 router.put("/update/:id", async (req, res) => {
-  const { image } = req.body;
+  // const { image } = req.body;
   try {
     const mp3 = await Mp3.findById(req.params.id);
 
-    const result = await ImageKit.upload({
-      file: image,
-      fileName: "musicimage.jpg",
-    });
-    mp3.image = result.url || mp3.result.url;
+    // const result = await ImageKit.upload({
+    //   file: image,
+    //   fileName: "musicimage.jpg",
+    // });
+    mp3.image = req.body.image || mp3.image;
     mp3.artist = req.body.artist || mp3.artist;
     mp3.filepath = req.body.filepath || mp3.filepath;
     mp3.title = req.body.title || mp3.title;
@@ -133,7 +133,7 @@ router.put("/update/:id", async (req, res) => {
 
     const updatedUser = await mp3.save();
     // Delete the temporary file
-    fs.unlinkSync(image);
+    // fs.unlinkSync(image);
     res.status(200).json({
       _id: updatedUser._id,
       brand: updatedUser.brand,
