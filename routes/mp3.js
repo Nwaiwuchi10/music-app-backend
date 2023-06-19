@@ -74,7 +74,7 @@ router.post(
         filepath: req.body.filepath,
         brand: req.body.brand,
         album: req.body.album,
-        image: result.image,
+        image: result.url,
         year: req.body.year,
         recommendSong: req.body.recommendSong,
         artist: req.body.artist,
