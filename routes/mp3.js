@@ -112,12 +112,13 @@ router.post(
 router.put("/update/:id", async (req, res) => {
   try {
     const mp3 = await Mp3.findById(req.params.id);
+
     const result = await ImageKit.upload(image, {
       fileName: "musicimage.jpg",
       // width:300,
       // crop:"scale"
     });
-    mp3.image = req.body.result.image || mp3.result.image;
+    mp3.image = result.image || mp3.result.image;
     mp3.artist = req.body.artist || mp3.artist;
     mp3.filepath = req.body.filepath || mp3.filepath;
     mp3.title = req.body.title || mp3.title;
