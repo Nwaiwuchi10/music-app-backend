@@ -61,7 +61,8 @@ router.post(
     const modify = title.replace(/\s+/g, "_");
 
     try {
-      const result = await ImageKit.upload(image, {
+      const result = await ImageKit.upload({
+        image,
         fileName: "musicimage.jpg",
         // width:300,
         // crop:"scale"
