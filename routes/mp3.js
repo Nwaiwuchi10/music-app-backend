@@ -62,7 +62,7 @@ router.post(
 
     try {
       const result = await ImageKit.upload({
-        image,
+        file: image,
         fileName: "musicimage.jpg",
         // width:300,
         // crop:"scale"
