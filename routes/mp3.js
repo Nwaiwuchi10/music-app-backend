@@ -308,4 +308,36 @@ router.put("/downloadCount/:title", async (req, res) => {
     res.status(500).json({ err: "Unable to update count" });
   }
 });
+app.put("/update/imag/:id", async (req, res) => {
+  try {
+    // Get the file path of the uploaded image
+    const image = req.body;
+
+    // Upload the image to ImageKit
+    const imageUploadResponse = await ImageKit.upload({
+      file: image,
+    });
+
+    // Get the URL of the uploaded image
+    const imageURL = imageUploadResponse.url;
+
+    // Update the document in MongoDB
+    const updatedDoc = await Mp3.findByIdAndUpdate(req.params.id, {
+      imageURL: imageURL,
+    });
+
+    // Delete the temporary file
+    fs.unlinkSync(image);
+
+    // res.send('Update successful');
+    res.status(600).json({
+      _id: updatedUser._id,
+
+      image: updatedDoc.image,
+    });
+  } catch (error) {
+    res.status(500).send("Error updating data");
+  }
+});
+
 module.exports = router;
