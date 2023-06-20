@@ -332,7 +332,7 @@ router.put("/update/image/:id", async (req, res) => {
 
     // Update the document in MongoDB
     await Mp3.findByIdAndUpdate(req.params.id, {
-      imageURL: imagResult,
+      imageURL: imagResult.url,
     });
 
     // Delete the temporary file
