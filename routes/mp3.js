@@ -319,8 +319,12 @@ router.put("/downloadCount/:title", async (req, res) => {
 });
 router.put("/update/image/:id", async (req, res) => {
   try {
+    const id = req.params.id;
+    const { image } = req.body;
+    if (!image) {
+      return res.status(400).send("No image file found");
+    }
     // Get the file path of the uploaded image
-    const image = req.body;
 
     // Upload the image to ImageKit
     const imagResult = await ImageKit.upload({
@@ -331,7 +335,7 @@ router.put("/update/image/:id", async (req, res) => {
     // Get the URL of the uploaded image
 
     // Update the document in MongoDB
-    await Mp3.findByIdAndUpdate(req.params.id, {
+    await Mp3.findByIdAndUpdate(id, {
       imageURL: imagResult.url,
     });
 
@@ -340,7 +344,7 @@ router.put("/update/image/:id", async (req, res) => {
 
     res.send("Update successful");
   } catch (error) {
-    res.status(500).send("Error updating data");
+    res.status(500).send("Error updating Image data");
   }
 });
 
