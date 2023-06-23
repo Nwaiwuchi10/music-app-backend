@@ -2,6 +2,7 @@ const Mp3 = require("../models/Mp3");
 const multer = require("multer");
 const path = require("path");
 const Mp4 = require("../models/Mp4");
+const imagekitvideo = require("../Utils/imagekitvideo");
 const router = require("express").Router();
 
 /////multer storage
@@ -54,7 +55,7 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title, image } = req.body;
+    const { title, image, videoDownload } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
@@ -62,6 +63,14 @@ router.post(
       const result = await ImageKit.upload({
         file: image,
         fileName: "musicimage.jpg",
+
+        // width:300,
+        // crop:"scale"
+      });
+      const results = await imagekitvideo.upload({
+        file: videoDownload,
+        fileName: "musicvideo.MP3",
+        folder: "/videos",
         // width:300,
         // crop:"scale"
       });
@@ -80,6 +89,7 @@ router.post(
         likes: req.body.likes,
         description: req.body.description,
         category: req.body.category,
+        videoDownload: results.url,
       });
 
       //save post and respond
@@ -97,7 +107,7 @@ router.post(
         brand: post.brand,
         album: post.album,
         description: post.description,
-
+        videoDownload: post.videoDownload,
         genre: post.genre,
         title: post.title,
         category: post.category,

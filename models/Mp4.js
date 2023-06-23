@@ -34,6 +34,7 @@ const Mp4Schema = new mongoose.Schema(
     year: { type: String },
 
     filepath: { type: String },
+    videoDownload: { type: String },
   },
   { timestamps: true }
 );

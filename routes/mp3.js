@@ -1,4 +1,5 @@
 const ImageKit = require("../Utils/imagekit");
+const imagekitaudio = require("../Utils/imagekitaudio");
 const s3 = require("../Utils/s3aws");
 const Mp3 = require("../models/Mp3");
 const multer = require("multer");
@@ -62,17 +63,26 @@ router.post(
     const modify = title.replace(/\s+/g, "_");
 
     try {
-      const s3params = {
-        Bucket: "YOUR_BUCKET_NAME",
-        Key: filepath.originalname,
-        Body: filepath.buffer,
-      };
-      const s3result = s3.upload({
-        s3params,
-      });
+      // const s3params = {
+      //   Bucket: "YOUR_BUCKET_NAME",
+      //   Key: filepath.originalname,
+      //   Body: filepath.buffer,
+      // };
+      // const s3result = s3.upload({
+      //   s3params,
+      // });
       const result = await ImageKit.upload({
         file: image,
         fileName: "musicimage.jpg",
+        // width:300,
+        // crop:"scale"
+      });
+      const results = await imagekitaudio.upload({
+        // file: fs.createReadStream(req.file.path),
+        file: filepath,
+        fileName: "musicaudio.MP3",
+        folder: "/audios",
+        // useUniqueFileName: true,
         // width:300,
         // crop:"scale"
       });
@@ -81,7 +91,7 @@ router.post(
         title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
-        filepath: s3result,
+        filepath: results.url,
         brand: req.body.brand,
         album: req.body.album,
         image: result.url,
