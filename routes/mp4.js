@@ -55,7 +55,7 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title, image, videoDownload } = req.body;
+    const { title, image, videoDownload, filepath } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
@@ -69,17 +69,24 @@ router.post(
       });
       const results = await imagekitvideo.upload({
         file: videoDownload,
-        fileName: "musicvideo.MP3",
+        fileName: "musicvideo.MP4",
         folder: "/videos",
         // width:300,
         // crop:"scale"
       });
-      //create new user
+      const resullts = await imagekitvideo.upload({
+        file: filepath,
+        fileName: "musicvideoYoutube.MP4",
+        folder: "/Youtubevideos",
+        // width:300,
+        // crop:"scale"
+      });
+      //create new mp4
       const newPost = new Mp4({
         title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
-        filepath: req.body.filepath,
+        filepath: resullts.url,
         brand: req.body.brand,
         album: req.body.album,
         image: result.url,
