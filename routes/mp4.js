@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const Mp4 = require("../models/Mp4");
 const imagekitvideo = require("../Utils/imagekitvideo");
+const imagekit = require("../Utils/imagekit");
 const router = require("express").Router();
 
 /////multer storage
@@ -60,7 +61,7 @@ router.post(
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
     try {
-      const result = await ImageKit.upload({
+      const result = await imagekit.upload({
         file: image,
         fileName: "musicimage.jpg",
 
