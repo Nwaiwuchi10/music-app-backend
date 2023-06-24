@@ -81,7 +81,7 @@ router.post(
       const results = await imagekitaudio.upload({
         // file: fs.createReadStream(req.file.path),
         file: filepath,
-        fileName: `${artist}-${title}`,
+        fileName: `${req.body.artist}-${req.body.title}`,
         folder: "/audios",
         // useUniqueFileName: true,
         // width:300,
