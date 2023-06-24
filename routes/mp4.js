@@ -55,7 +55,7 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title, image, videoDownload } = req.body;
+    const { title, image, videoDownload, filepath } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
@@ -74,12 +74,20 @@ router.post(
         // width:300,
         // crop:"scale"
       });
+      const resalt = await imagekitvideo.upload({
+        file: filepath,
+        fileName: "musicyoutube.MP4",
+        folder: "/youtube",
+        // width:300,
+        // crop:"scale"
+      });
 
       const newPost = new Mp4({
         title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
-        filepath: req.body.filepath,
+        filepath: resalt.url,
+        videoDownload: results.url,
         brand: req.body.brand,
         album: req.body.album,
         image: result.url,
@@ -89,7 +97,6 @@ router.post(
         likes: req.body.likes,
         description: req.body.description,
         category: req.body.category,
-        videoDownload: results.url,
       });
 
       //save post and respond
