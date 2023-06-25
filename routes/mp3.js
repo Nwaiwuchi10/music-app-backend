@@ -58,7 +58,7 @@ router.post(
 
   async (req, res) => {
     const { title, image, filepath } = req.body;
-
+    const { originalname } = req.file;
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
 
@@ -80,8 +80,8 @@ router.post(
       const results = await imagekitaudio.upload({
         // file: fs.createReadStream(req.file.path),
         file: filepath,
-        fileName: `${req.body.artist}-${req.body.title.substring(
-          req.body.title.lastIndexOf(".")
+        fileName: `${req.body.artist}-${req.body.title}${originalname.substring(
+          originalname.lastIndexOf(".")
         )}`,
         folder: "/audios",
         // useUniqueFileName: true,
