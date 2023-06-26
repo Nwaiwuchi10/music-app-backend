@@ -82,7 +82,7 @@ router.post(
         file: filepath,
         fileName: `${req.body.artist}-${req.body.title}`,
 
-        // folder: "/audios",
+        folder: "/audios",
         // useUniqueFileName: true,
         // width:300,
         // crop:"scale"
