@@ -150,6 +150,7 @@ router.put("/update/:id", async (req, res) => {
     mp3.category = req.body.category || mp3.category;
     mp3.album = req.body.album || mp3.album;
     mp3.genre = req.body.genre || mp3.genre;
+    mp3.lyrics = req.body.lyrics || mp3.lyrics;
 
     const updatedUser = await mp3.save();
     // Delete the temporary file
@@ -167,6 +168,7 @@ router.put("/update/:id", async (req, res) => {
       category: updatedUser.category,
       album: updatedUser.album,
       genre: updatedUser.genre,
+      lyrics: updatedUser.lyrics,
     });
   } catch (err) {
     res.status(500).json({ err: "Failed to update" });

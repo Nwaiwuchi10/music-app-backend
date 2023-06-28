@@ -19,6 +19,9 @@ const Mp3Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    lyrics: {
+      type: String,
+    },
     category: {
       type: String,
       max: 50,
