@@ -28,7 +28,7 @@ const Mp3Schema = new mongoose.Schema(
     },
     downloadCount: {
       type: Number,
-      default: 0,
+      default: 202,
     },
     recommendSong: {
       type: Boolean,
