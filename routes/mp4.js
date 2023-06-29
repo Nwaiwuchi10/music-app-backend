@@ -77,8 +77,8 @@ router.post(
       });
       const resalt = await imagekitvideo.upload({
         file: filepath,
-        fileName: "musicyoutube.MP4",
-        folder: "/youtube",
+        fileName: `${req.body.artist}-${req.body.title}.MP4`,
+        folder: "/videos",
         // width:300,
         // crop:"scale"
       });

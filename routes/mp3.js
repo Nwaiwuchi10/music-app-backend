@@ -214,6 +214,44 @@ router.get("/mp3/:title", async (req, res) => {
   }
 });
 ////
+router.get("/mp3/songs/:artist/:title", async (req, res) => {
+  try {
+    const artist = req.params.artist.replace(/\s+/g, "_");
+    const title = req.params.title.replace(/\s+/g, "_");
+    const mp3 = Mp3.findOne({ artist: artist, title: title });
+    if (!mp3) {
+      return res.status(404).json({ error: "Music not found" });
+    }
+
+    // Handle the query result
+    res.json(mp3);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+////
+router.get("/mp3s/:artist/:title", async (req, res) => {
+  try {
+    const mp3 = await Mp3.find({
+      $and: [
+        { artist: req.params.artist.replace(/\s+/g, "_") },
+
+        { title: req.params.title.replace(/\s+/g, "_") },
+      ],
+    });
+
+    if (!mp3) {
+      return res.status(404).json({ error: "Music not found" });
+    }
+
+    // If the music is found, return the music data
+    res.json(mp3);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+////
 router.get("/", async (req, res) => {
   try {
     const mp3s = await Mp3.find(
