@@ -231,6 +231,20 @@ router.get("/mp3/songs/:artist/:title", async (req, res) => {
 });
 
 ////
+router.get("/mp/:artist/:title", (req, res) => {
+  const artist = req.params.artist.replace(/\s+/g, "_");
+  const title = req.params.title.replace(/\s+/g, "_");
+
+  // Example MongoDB query
+  Mp3.findOne({ artist: artist, title: title }, (err, data) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+    } else {
+      res.json(data);
+    }
+  });
+});
+///
 router.get("/mp3s/:artist/:title", async (req, res) => {
   try {
     const mp3 = await Mp3.find({
