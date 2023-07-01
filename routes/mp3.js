@@ -197,7 +197,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 ////
-router.get("/mp3/song/:title", async (req, res) => {
+router.get("/mp3/:title", async (req, res) => {
   try {
     const mp3 = await Mp3.findOne({
       title: req.params.title.replace(/\s+/g, "_"),
@@ -231,7 +231,7 @@ router.get("/mp3/songs/:artist/:title", async (req, res) => {
 });
 
 ////
-router.get("/mp3/:artist/:title", async (req, res) => {
+router.get("/songmp3/:artist/:title", async (req, res) => {
   // Replace spaces in the variables with underscores
 
   try {
@@ -239,7 +239,7 @@ router.get("/mp3/:artist/:title", async (req, res) => {
     const variableOne = artist.replace(/ /g, "_");
     const variableTwo = title.replace(/ /g, "_");
 
-    const result = await Mp3.find({
+    const result = await Mp3.findOne({
       variable_one: variableOne,
       variable_two: variableTwo,
     });
