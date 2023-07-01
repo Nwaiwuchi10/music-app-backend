@@ -197,7 +197,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 ////
-router.get("/mp3/:title", async (req, res) => {
+router.get("/mp3/song/:title", async (req, res) => {
   try {
     const mp3 = await Mp3.findOne({
       title: req.params.title.replace(/\s+/g, "_"),
@@ -231,9 +231,9 @@ router.get("/mp3/songs/:artist/:title", async (req, res) => {
 });
 
 ////
-router.get("/mp/:artist/:title", (req, res) => {
-  const artist = req.params.artist.replace(/\s+/g, "_");
-  const title = req.params.title.replace(/\s+/g, "_");
+router.get("/mp3/:artist/:title", (req, res) => {
+  const artist = req.params.artist.replace(/ /g, "_");
+  const title = req.params.title.replace(/ /g, "_");
 
   // Example MongoDB query
   Mp3.findOne({ artist: artist, title: title }, (err, data) => {
