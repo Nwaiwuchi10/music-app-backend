@@ -231,7 +231,25 @@ router.get("/mp3/songs/:artist/:title", async (req, res) => {
 });
 
 ////
-router.get("/mp3/:artist/:title", (req, res) => {
+router.get("/mp3/:artist/:title", async (req, res) => {
+  // Replace spaces in the variables with underscores
+
+  try {
+    const { artist, title } = req.params;
+    const variableOne = artist.replace(/ /g, "_");
+    const variableTwo = title.replace(/ /g, "_");
+
+    const result = await Mp3.find({
+      variable_one: variableOne,
+      variable_two: variableTwo,
+    });
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+router.get("/smp3/:artist/:title", (req, res) => {
   const artist = req.params.artist.replace(/ /g, "_");
   const title = req.params.title.replace(/ /g, "_");
 
