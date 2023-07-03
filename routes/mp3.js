@@ -229,7 +229,7 @@ router.get("/mp3/:title", async (req, res) => {
       ],
     });
     // If the music is found, return the music data
-    res.json({ mp3, coverPicture: transformedImageUrl });
+    res.json({ mp3, transformedImageUrl });
   } catch (err) {
     res.status(500).json(err);
   }
