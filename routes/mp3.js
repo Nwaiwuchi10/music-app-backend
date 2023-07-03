@@ -217,19 +217,18 @@ router.get("/mp3/:title", async (req, res) => {
     if (!mp3) {
       return res.status(404).json({ error: "Music not found" });
     }
-    const transformedImageUrl = ImageKit.url({
-      url: mp3.musicImageCover,
-      transformation: [
-        {
-          // Apply your desired image transformation settings here
-          // For example, resize the image to a specific size
-          height: 300,
-          width: 300,
-        },
-      ],
-    });
+    // const transformedImageUrl = ImageKit.url({
+    //   url: mp3.musicImageCover,
+    //   transformation: [
+    //     {
+
+    //       height: 300,
+    //       width: 300,
+    //     },
+    //   ],
+    // });
     // If the music is found, return the music data
-    res.json({ mp3, transformedImageUrl });
+    res.json(mp3);
   } catch (err) {
     res.status(500).json(err);
   }
