@@ -57,10 +57,11 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title, image, filepath } = req.body;
+    const { title, image, filepath, artist } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
+    const modifys = artist.replace(/\s+/g, "_");
 
     try {
       // const s3params = {
@@ -71,12 +72,21 @@ router.post(
       // const s3result = s3.upload({
       //   s3params,
       // });
+
       const result = await ImageKit.upload({
         file: image,
-        fileName: "musicimage.jpg",
+        fileName: `${req.body.artist}-${req.body.title}.jpg`,
         // width:300,
         // crop:"scale"
       });
+      const musicimg = await ImageKit.upload({
+        file: "https://ik.imagekit.io/wgbw0oopk2/IMG-20230615-WA0020.jpg?updatedAt=1688422624080",
+        fileName: `${req.body.artist}-${req.body.title}.jpg`,
+        folder: "/imagecover",
+        // width:300,
+        // crop:"scale"
+      });
+
       const results = await imagekitaudio.upload({
         // file: fs.createReadStream(req.file.path),
         file: filepath,
@@ -95,10 +105,11 @@ router.post(
         filepath: results.url,
         brand: req.body.brand,
         album: req.body.album,
+        musicImageCover: musicimg.url,
         image: result.url,
         year: req.body.year,
         recommendSong: req.body.recommendSong,
-        artist: req.body.artist,
+        artist: modifys,
         likes: req.body.likes,
         description: req.body.description,
         category: req.body.category,
@@ -206,9 +217,19 @@ router.get("/mp3/:title", async (req, res) => {
     if (!mp3) {
       return res.status(404).json({ error: "Music not found" });
     }
-
+    const transformedImageUrl = ImageKit.url({
+      url: mp3.musicImageCover,
+      transformation: [
+        {
+          // Apply your desired image transformation settings here
+          // For example, resize the image to a specific size
+          height: 300,
+          width: 300,
+        },
+      ],
+    });
     // If the music is found, return the music data
-    res.json(mp3);
+    res.json({ mp3, coverPicture: transformedImageUrl });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -235,32 +256,53 @@ router.get("/songmp3/:artist/:title", async (req, res) => {
   // Replace spaces in the variables with underscores
 
   try {
-    const { artist, title } = req.params;
-    const variableOne = artist.replace(/ /g, "_");
-    const variableTwo = title.replace(/ /g, "_");
-
-    const result = await Mp3.findOne({
-      variable_one: variableOne,
-      variable_two: variableTwo,
+    const mp3 = await Mp3.findOne({
+      artist: req.query.artist.replace(/ /g, "_"),
+      title: req.query.title.replace(/ /g, "_"),
     });
-    res.json(result);
+    if (!mp3) {
+      return res.status(404).json({ error: "Music not found" });
+    }
+    res.json(mp3);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "An error occurred" });
   }
 });
-router.get("/smp3/:artist/:title", (req, res) => {
-  const artist = req.params.artist.replace(/ /g, "_");
-  const title = req.params.title.replace(/ /g, "_");
+////
+router.get("/dh/:artist/:title", (req, res) => {
+  const { artist, title } = req.params;
 
-  // Example MongoDB query
-  Mp3.findOne({ artist: artist, title: title }, (err, data) => {
-    if (err) {
+  Mp3.find({
+    variable1_: artist.replace(/ /g, "_"),
+    variable2_: title.replace(/ /g, "_"),
+  })
+    // .toArray()
+    .then((documents) => {
+      res.json(documents);
+    })
+    .catch((err) => {
+      console.log("Error occurred while querying MongoDB", err);
       res.status(500).json({ error: "An error occurred" });
-    } else {
-      res.json(data);
+    });
+});
+
+///
+router.get("/smp3/:title:artist", (req, res) => {
+  // Example MongoDB query
+  Mp3.findOne(
+    {
+      artist: req.params.artist,
+      title: req.params.title,
+    },
+    (err, data) => {
+      if (err) {
+        res.status(500).json({ error: "An error occurred" });
+      } else {
+        res.json(data);
+      }
     }
-  });
+  );
 });
 ///
 router.get("/mp3s/:artist/:title", async (req, res) => {

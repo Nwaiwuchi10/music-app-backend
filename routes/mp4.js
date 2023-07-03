@@ -63,22 +63,22 @@ router.post(
     try {
       const result = await imagekit.upload({
         file: image,
-        fileName: "musicimage.jpg",
+        fileName: `${req.body.artist}-${req.body.title}.jpg`,
 
         // width:300,
         // crop:"scale"
       });
       const results = await imagekitvideo.upload({
         file: videoDownload,
-        fileName: "musicvideo.MP4",
+        fileName: `${req.body.artist}-${req.body.title}.MP4`,
         folder: "/videos",
         // width:300,
         // crop:"scale"
       });
       const resalt = await imagekitvideo.upload({
         file: filepath,
-        fileName: `${req.body.artist}-${req.body.title}.MP4`,
-        folder: "/videos",
+        fileName: `${filepath}`,
+        folder: "/youtube",
         // width:300,
         // crop:"scale"
       });
@@ -158,6 +158,34 @@ router.put("/update/:id", async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ err: "Failed to update" });
+  }
+});
+//// update youtube
+router.put("/updateyoutube/:id", async (req, res) => {
+  try {
+    const { filepath } = req.body;
+    const mp4 = req.params.id;
+
+    // Upload YouTube video to ImageKit
+    const uploadResponse = await imagekit.upload({
+      file: filepath,
+      fileName: `video_${mp4}.mp4`,
+      folder: "/youtube",
+    });
+
+    // Update MongoDB record with ImageKit URL
+    const updatedVideo = await Mp4.findByIdAndUpdate(
+      mp4,
+      {
+        filepath: uploadResponse.url,
+      },
+      { new: true }
+    );
+
+    res.json(updatedVideo);
+  } catch (err) {
+    console.error("Error updating video:", err);
+    res.status(500).json({ error: "Failed to update video" });
   }
 });
 ////to get all music
