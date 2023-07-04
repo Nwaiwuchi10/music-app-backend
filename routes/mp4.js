@@ -77,7 +77,7 @@ router.post(
       });
       const resalt = await imagekitvideo.upload({
         file: filepath,
-        fileName: `${filepath}`,
+        fileName: `${filepath}.MP4`,
         folder: "/youtube",
         // width:300,
         // crop:"scale"
