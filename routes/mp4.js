@@ -1,6 +1,6 @@
 const Mp3 = require("../models/Mp3");
 const multer = require("multer");
-const path = require("path");
+
 const Mp4 = require("../models/Mp4");
 const imagekitvideo = require("../Utils/imagekitvideo");
 const imagekit = require("../Utils/imagekit");
@@ -56,7 +56,7 @@ router.post(
   "/",
 
   async (req, res) => {
-    const { title, image, videoDownload } = req.body;
+    const { title, image, videoDownload, filepath } = req.body;
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
@@ -75,12 +75,18 @@ router.post(
         // width:300,
         // crop:"scale"
       });
-
+      const youtuberesults = await imagekitvideo.upload({
+        file: filepath,
+        fileName: `${req.body.filepath}`,
+        folder: "/youtube",
+        // width:300,
+        // crop:"scale"
+      });
       const newPost = new Mp4({
         title: modify,
         genre: req.body.genre,
         rating: req.body.rating,
-        filepath: req.body.filepath,
+        filepath: youtuberesults.url,
         videoDownload: results.url,
         brand: req.body.brand,
         album: req.body.album,
