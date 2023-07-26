@@ -7,6 +7,7 @@ const config = require("config");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mp3Route = require("./routes/mp3");
+const uploadmusicRoute = require("./routes/uploadMusic");
 const authRoute = require("./routes/auth");
 const mp4Route = require("./routes/mp4");
 const router = express.Router();
@@ -60,6 +61,7 @@ mongoose
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/music", mp3Route);
+app.use("/api/uploadmusics", uploadmusicRoute);
 app.use("/api/mp4", mp4Route);
 app.use(express.static(path.join(__dirname, "/build")));
 app.get("*", (req, res) =>
