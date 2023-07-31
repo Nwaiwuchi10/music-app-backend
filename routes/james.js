@@ -7,6 +7,7 @@ const multer = require("multer");
 const cloudup = require("cloudup");
 const path = require("path");
 const UploadMusic = require("../models/UploadMusic");
+
 // const cloudinary = require("../Utils/cloudinary");
 const router = require("express").Router();
 
@@ -45,7 +46,7 @@ router.post(
       // });
       //create new user
       const newPost = new UploadMusic({
-        title: modify,
+        title: req.body.title,
         genre: req.body.genre,
         user: req.body.user,
         lyrics: req.body.lyrics,
@@ -57,7 +58,7 @@ router.post(
         image: req.body.image,
         year: req.body.year,
         recommendSong: req.body.recommendSong,
-        artist: modifys,
+        artist: req.body.artist,
         likes: req.body.likes,
         description: req.body.description,
         category: req.body.category,
@@ -82,7 +83,6 @@ router.post(
         user: post.user,
         genre: post.genre,
         title: post.title,
-        category: post.category,
       });
     } catch (err) {
       res.status(500).json(err);

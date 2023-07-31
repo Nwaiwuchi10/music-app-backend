@@ -79,13 +79,13 @@ router.post(
         // width:300,
         // crop:"scale"
       });
-      const musicimg = await ImageKit.upload({
-        file: "https://ik.imagekit.io/wgbw0oopk2/IMG-20230615-WA0020.jpg?updatedAt=1688422624080",
-        fileName: `${req.body.artist}-${req.body.title}.jpg`,
-        folder: "/imagecover",
-        // width:300,
-        // crop:"scale"
-      });
+      // const musicimg = await ImageKit.upload({
+      //   file: "https://ik.imagekit.io/wgbw0oopk2/IMG-20230615-WA0020.jpg?updatedAt=1688422624080",
+      //   fileName: `${req.body.artist}-${req.body.title}.jpg`,
+      //   folder: "/imagecover",
+      //   // width:300,
+      //   // crop:"scale"
+      // });
 
       const results = await imagekitaudio.upload({
         // file: fs.createReadStream(req.file.path),
@@ -105,7 +105,7 @@ router.post(
         filepath: results.url,
         brand: req.body.brand,
         album: req.body.album,
-        musicImageCover: musicimg.url,
+        musicImageCover: req.body.musicImageCover,
         image: result.url,
         year: req.body.year,
         recommendSong: req.body.recommendSong,
