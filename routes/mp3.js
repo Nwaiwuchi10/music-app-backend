@@ -72,7 +72,11 @@ router.post(
       // const s3result = s3.upload({
       //   s3params,
       // });
+      const existingSong = await Mp3.findOne({ title, artist });
 
+      if (existingSong) {
+        return res.status(409).json({ error: 'Song already exists.' });
+      }
       const result = await ImageKit.upload({
         file: image,
         fileName: `${req.body.artist}-${req.body.title}.jpg`,

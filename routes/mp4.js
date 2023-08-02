@@ -61,6 +61,11 @@ router.post(
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
     try {
+      const existingSong = await Mp4.findOne({ title, artist });
+
+      if (existingSong) {
+        return res.status(409).json({ error: "Song already exists." });
+      }
       const result = await imagekit.upload({
         file: image,
         fileName: `${req.body.artist}-${req.body.title}.jpg`,

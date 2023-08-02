@@ -35,10 +35,11 @@ router.post(
         //   // width:300,
         //   // crop:"scale"
       });
-      const cloudupFile = await cloudupAPI.uploadFile(
-        req.file.path,
-        cloudupCredentials
-      );
+      const fileUrl = `https://www.mediafire.com/ChrysogonuNwaiwu/${filepath}`;
+      // const cloudupFile = await cloudupAPI.uploadFile(
+      //   req.file.path,
+      //   cloudupCredentials
+      // );
       //create new user
       const newAnnouncement = new UploadMusic({
         title: modifytitle,
@@ -47,7 +48,7 @@ router.post(
         artist: modifyartist,
         lyrics: req.body.lyrics,
 
-        filepath: cloudupFile.url,
+        filepath: fileUrl,
         brand: req.body.brand,
         album: req.body.album,
 
