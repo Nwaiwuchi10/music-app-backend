@@ -61,11 +61,6 @@ router.post(
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
     try {
-      const existingSong = await Mp4.findOne({ title, artist });
-
-      if (existingSong) {
-        return res.status(409).json({ error: "Song already exists." });
-      }
       const result = await imagekit.upload({
         file: image,
         fileName: `${req.body.artist}-${req.body.title}.jpg`,
@@ -75,7 +70,7 @@ router.post(
       });
       const results = await imagekitvideo.upload({
         file: videoDownload,
-        fileName: `${req.body.artist}-${req.body.title}.MP4`,
+        fileName: `${req.body.artist}-${req.body.title}-todaysmuzik.com.ng.MP4`,
         folder: "/videos",
         // width:300,
         // crop:"scale"
