@@ -28,6 +28,9 @@ const Mp3Schema = new mongoose.Schema(
     genre: {
       type: String,
     },
+    youtubelink: {
+      type: String,
+    },
     downloadCount: {
       type: Number,
       default: 202,
