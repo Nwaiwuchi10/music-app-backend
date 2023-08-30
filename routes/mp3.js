@@ -4,6 +4,7 @@ const s3 = require("../Utils/s3aws");
 const Mp3 = require("../models/Mp3");
 const multer = require("multer");
 const path = require("path");
+const Category = require("../models/Category");
 // const cloudinary = require("../Utils/cloudinary");
 const router = require("express").Router();
 
@@ -75,7 +76,7 @@ router.post(
       const existingSong = await Mp3.findOne({ title, artist });
 
       if (existingSong) {
-        return res.status(409).json({ error: 'Song already exists.' });
+        return res.status(409).json({ error: "Song already exists." });
       }
       const result = await ImageKit.upload({
         file: image,
@@ -475,5 +476,70 @@ router.put("/update/image/:id", async (req, res) => {
     res.status(500).send("Error updating Image data");
   }
 });
+/////get music by category
+router.get("/getcategories", async (req, res) => {
+  try {
+    const categories = await Category.find({});
+    if (!categories) {
+      return res.status(404).json({ error: "Music Category not found" });
+    }
 
+    // Handle the query result
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+/////post music category
+router.post("/postcategories", async (req, res) => {
+  try {
+    const category = new Category({
+      category: req.body.category,
+    });
+
+    const createdCatgory = await category.save();
+    res.status(200).json({
+      message: "category created successfully",
+      createdCatgory,
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+/////get music categories
+router.get("/getcategories", async (req, res) => {
+  try {
+    const categories = await Category.find({});
+    if (!categories) {
+      return res.status(404).json({ error: "Music Category not found" });
+    }
+
+    // Handle the query result
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+/////get musicPost by category
+router.get("/category", async (req, res) => {
+  try {
+    let mp3s;
+    if (req.params.cat == "Top") {
+      mp3s = await Mp3.find({}).sort({ rating: -1 }).limit(50);
+    } else if (req.params.cat == "Latest") {
+      mp3s = await Mp3.find({}).sort({ createdAt: -1 }).limit(50);
+    } else {
+      mp3s = await Mp3.find({ category: req.params.cat })
+        .limit(50)
+        .sort({ createdAt: -1 });
+    }
+
+    res.json({
+      mp3s,
+      message: "Music found",
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;
