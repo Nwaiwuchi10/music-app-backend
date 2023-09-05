@@ -522,23 +522,40 @@ router.get("/getcategories", async (req, res) => {
 /////get musicPost by category
 router.get("/category/:cat", async (req, res) => {
   try {
-    let mp3s;
-    if (req.params.cat == "Top") {
-      mp3s = await Mp3.find({}).sort({ rating: -1 }).limit(50);
-    } else if (req.params.cat == "Latest") {
-      mp3s = await Mp3.find({}).sort({ createdAt: -1 }).limit(50);
+    let mp3;
+    if (req.params.category == "Top") {
+      mp3 = await Mp3.find({}).sort({ rating: -1 }).limit(50);
+    } else if (req.params.category == "Latest") {
+      mp3 = await Mp3.find({}).sort({ createdAt: -1 }).limit(50);
     } else {
-      mp3s = await Mp3.find({ category: req.params.cat })
+      mp3 = await Mp3.findOne({ category: req.params.category })
         .limit(50)
         .sort({ createdAt: -1 });
     }
 
     res.json({
-      mp3s,
+      mp3,
       message: "Music found",
     });
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+router.get("/mp3category/:category", async (req, res) => {
+  try {
+    const category = req.params.category;
+    const mp3 = await Mp3.findOne({ category });
+
+    if (!mp3 || mp3.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No Music found for this category." });
+    }
+
+    res.json(mp3);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 module.exports = router;
