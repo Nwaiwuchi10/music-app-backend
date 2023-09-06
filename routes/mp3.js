@@ -125,7 +125,7 @@ router.post(
       //save post and respond
       const post = await newPost.save();
       // Remove the temporary uploaded file
-      fs.unlinkSync(req.file.path);
+      // fs.unlinkSync(req.file.path);
       res.status(200).json({
         id: post.id,
         artist: post.artist,
