@@ -11,7 +11,7 @@ const Mp3Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    musicImageCover: {
+    coverPicture: {
       type: String,
     },
     description: {

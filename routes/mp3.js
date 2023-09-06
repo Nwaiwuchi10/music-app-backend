@@ -84,13 +84,14 @@ router.post(
         // width:300,
         // crop:"scale"
       });
-      // const musicimg = await ImageKit.upload({
-      //   file: "https://ik.imagekit.io/wgbw0oopk2/IMG-20230615-WA0020.jpg?updatedAt=1688422624080",
-      //   fileName: `${req.body.artist}-${req.body.title}.jpg`,
-      //   folder: "/imagecover",
-      //   // width:300,
-      //   // crop:"scale"
-      // });
+
+      const coverPicture = await ImageKit.upload({
+        file: "https://ik.imagekit.io/wgbw0oopk2/IMG-20230615-WA0020.jpg?updatedAt=1688422624080",
+        fileName: `${req.body.artist}-${req.body.title}.jpg`,
+        folder: "/imagecover",
+        // width:300,
+        // crop:"scale"
+      });
 
       const results = await imagekitaudio.upload({
         // file: fs.createReadStream(req.file.path),
@@ -98,6 +99,7 @@ router.post(
         fileName: `${req.body.artist}-${req.body.title}-todaysmuzik.com.ng.MP3`,
 
         folder: "/audios",
+        coverPicture: coverPicture.url,
         // useUniqueFileName: true,
         // width:300,
         // crop:"scale"
@@ -122,7 +124,8 @@ router.post(
 
       //save post and respond
       const post = await newPost.save();
-
+      // Remove the temporary uploaded file
+      fs.unlinkSync(req.file.path);
       res.status(200).json({
         id: post.id,
         artist: post.artist,
