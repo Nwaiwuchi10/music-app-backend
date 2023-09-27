@@ -4,6 +4,7 @@ const compression = require("compression");
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
+const nodeID3 = require("node-id3");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mp3Route = require("./routes/mp3");

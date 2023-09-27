@@ -2,7 +2,9 @@ const ImageKit = require("../Utils/imagekit");
 const imagekitaudio = require("../Utils/imagekitaudio");
 const s3 = require("../Utils/s3aws");
 const Mp3 = require("../models/Mp3");
+const fs = require("fs");
 const multer = require("multer");
+const nodeID3 = require("node-id3");
 const path = require("path");
 const Category = require("../models/Category");
 // const cloudinary = require("../Utils/cloudinary");
@@ -59,6 +61,7 @@ router.post(
 
   async (req, res) => {
     const { title, image, filepath, artist } = req.body;
+    const tags = nodeID3.read(filepath);
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
@@ -78,6 +81,12 @@ router.post(
       if (existingSong) {
         return res.status(409).json({ error: "Song already exists." });
       }
+      tags.image = {
+        mime: "image/jpeg", // Change to the appropriate MIME type
+        type: { id: 3, name: "front cover" }, // Use '3' for the front cover
+        description: "Album Cover",
+        imageBuffer: fs.readFileSync(coverPicture),
+      };
       const result = await ImageKit.upload({
         file: image,
         fileName: `${req.body.artist}-${req.body.title}.jpg`,
@@ -104,6 +113,7 @@ router.post(
         // width:300,
         // crop:"scale"
       });
+      nodeID3.update(tags, filepath);
       //create new user
       const newPost = new Mp3({
         title: modify,
