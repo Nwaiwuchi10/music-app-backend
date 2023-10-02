@@ -21,6 +21,9 @@ const Mp3Schema = new mongoose.Schema(
     lyrics: {
       type: String,
     },
+    audiomacklink: {
+      type: String,
+    },
     category: {
       type: String,
       max: 50,

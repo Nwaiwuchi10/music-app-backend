@@ -118,6 +118,7 @@ router.post(
       const newPost = new Mp3({
         title: modify,
         genre: req.body.genre,
+        audiomacklink: req.body.audiomacklink,
         rating: req.body.rating,
         filepath: results.url,
         brand: req.body.brand,
@@ -148,7 +149,7 @@ router.post(
         brand: post.brand,
         album: post.album,
         description: post.description,
-
+        audiomacklink: post.audiomacklink,
         genre: post.genre,
         title: post.title,
         category: post.category,
@@ -169,6 +170,7 @@ router.put("/update/:id", async (req, res) => {
     //   fileName: "musicimage.jpg",
     // });
     mp3.image = req.body.image || mp3.image;
+    mp3.audiomacklink = req.body.audiomacklink || mp3.audiomacklink;
     mp3.artist = req.body.artist || mp3.artist;
     mp3.filepath = req.body.filepath || mp3.filepath;
     mp3.title = req.body.title || mp3.title;
@@ -187,6 +189,7 @@ router.put("/update/:id", async (req, res) => {
     res.status(200).json({
       _id: updatedUser._id,
       brand: updatedUser.brand,
+      audiomacklink: updatedUser.audiomacklink,
       image: updatedUser.image,
       artist: updatedUser.artist,
       title: updatedUser.title,
