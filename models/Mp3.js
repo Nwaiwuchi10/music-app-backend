@@ -73,6 +73,7 @@ const Mp3Schema = new mongoose.Schema(
     year: { type: String },
 
     filepath: { type: String },
+    extDownloadPath: { type: String },
   },
   { timestamps: true }
 );

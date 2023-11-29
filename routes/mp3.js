@@ -121,6 +121,7 @@ router.post(
         audiomacklink: req.body.audiomacklink,
         rating: req.body.rating,
         filepath: results.url,
+        extDownloadPath: req.body.extDownloadPath,
         brand: req.body.brand,
         album: req.body.album,
         musicImageCover: req.body.musicImageCover,
@@ -147,6 +148,7 @@ router.post(
         year: post.year,
         likes: post.likes,
         brand: post.brand,
+        extDownloadPath: post.extDownloadPath,
         album: post.album,
         description: post.description,
         audiomacklink: post.audiomacklink,
@@ -172,6 +174,7 @@ router.put("/update/:id", async (req, res) => {
     mp3.image = req.body.image || mp3.image;
     mp3.audiomacklink = req.body.audiomacklink || mp3.audiomacklink;
     mp3.artist = req.body.artist || mp3.artist;
+    mp3.extDownloadPath = req.body.extDownloadPath || mp3.extDownloadPath;
     mp3.filepath = req.body.filepath || mp3.filepath;
     mp3.title = req.body.title || mp3.title;
     mp3.description = req.body.description || mp3.description;
@@ -189,6 +192,7 @@ router.put("/update/:id", async (req, res) => {
     res.status(200).json({
       _id: updatedUser._id,
       brand: updatedUser.brand,
+      extDownloadPath: updatedUser.extDownloadPath,
       audiomacklink: updatedUser.audiomacklink,
       image: updatedUser.image,
       artist: updatedUser.artist,
