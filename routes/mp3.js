@@ -61,7 +61,7 @@ router.post(
 
   async (req, res) => {
     const { title, image, filepath, artist } = req.body;
-    const tags = nodeID3.read(filepath);
+    // const tags = nodeID3.read(filepath);
 
     // const title = inputString.replace(/ /g, "");
     const modify = title.replace(/\s+/g, "_");
@@ -81,12 +81,12 @@ router.post(
       if (existingSong) {
         return res.status(409).json({ error: "Song already exists." });
       }
-      tags.image = {
-        mime: "image/jpeg", // Change to the appropriate MIME type
-        type: { id: 3, name: "front cover" }, // Use '3' for the front cover
-        description: "Album Cover",
-        imageBuffer: fs.readFileSync(coverPicture),
-      };
+      // tags.image = {
+      //   mime: "image/jpeg", // Change to the appropriate MIME type
+      //   type: { id: 3, name: "front cover" }, // Use '3' for the front cover
+      //   description: "Album Cover",
+      //   imageBuffer: fs.readFileSync(coverPicture),
+      // };
       const result = await ImageKit.upload({
         file: image,
         fileName: `${req.body.artist}-${req.body.title}.jpg`,
@@ -108,12 +108,12 @@ router.post(
         fileName: `${req.body.artist}-${req.body.title}-todaysmuzik.com.ng.MP3`,
 
         folder: "/audios",
-        coverPicture: coverPicture.url,
+        // coverPicture: coverPicture.url,
         // useUniqueFileName: true,
         // width:300,
         // crop:"scale"
       });
-      nodeID3.update(tags, filepath);
+      // nodeID3.update(tags, filepath);
       //create new user
       const newPost = new Mp3({
         title: modify,
@@ -124,7 +124,7 @@ router.post(
         extDownloadPath: req.body.extDownloadPath,
         brand: req.body.brand,
         album: req.body.album,
-        musicImageCover: req.body.musicImageCover,
+        // musicImageCover: req.body.musicImageCover,
         image: result.url,
         year: req.body.year,
         recommendSong: req.body.recommendSong,
