@@ -274,7 +274,32 @@ router.get("/mp3/songs/:artist/:title", async (req, res) => {
     res.status(500).json(err);
   }
 });
+/////
+// Define your route
+router.get("/songDetails/:artist/:title", async (req, res) => {
+  try {
+    const { artist, title } = req.params;
 
+    // Replace spaces with underscores
+    const formattedArtist = artist.replace(/\s+/g, "_");
+    const formattedTitle = title.replace(/\s+/g, "_");
+
+    // Query MongoDB using Mongoose
+    const mp3 = await Mp3.findOne({
+      artist: formattedArtist,
+      title: formattedTitle,
+    });
+
+    if (!mp3) {
+      return res.status(404).json({ error: "Song not found" });
+    }
+
+    res.json(mp3);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 ////
 router.get("/songmp3/:artist/:title", async (req, res) => {
   // Replace spaces in the variables with underscores
