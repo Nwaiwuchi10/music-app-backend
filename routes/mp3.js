@@ -379,7 +379,7 @@ router.get("/", async (req, res) => {
   try {
     const mp3s = await Mp3.find(
       {},
-      "_id title image category recommendSong artist"
+      "_id title image category recommendSong artist downloadCount genre "
     ).sort({ createdAt: -1 });
 
     res.status(200).json(mp3s);
